@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const Blog = require('./models/blog');
 
 
 // express app
@@ -26,23 +27,54 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(morgan('dev'));
 
+// mongoose and mango sandbox route
+// app.get('/add-blog', (req, res) => {
+//     const blog = new Blog({
+//         title: 'new blog 2',
+//         snippet: 'about my new blog',
+//         body: 'this is more about my new blog'
+//     });
+
+//     blog.save()
+//         .then((result) => {
+//             res.send(result)
+//         })
+//         .catch((err) => {
+//             console.log(err);
+//         })
+// })
+
+// app.get('/all-blogs', (req, res) => {
+//     Blog.find()
+//         .then((result) => {
+//             res.send(result)
+//         })
+//         .catch((err) => {
+//             console.log(err);
+//         })
+// })
+
+// routes
 app.get('/', (req, res) => {
     // blogs
-    const blogs = [
-        {title: 'Yoshi finds eggs', snippet: 'Clita elitr et amet et ipsum sea. Ipsum stet kasd ea et no est duo diam. Lorem dolores eos ut nonumy'},
-        {title: 'Yoshi finds eggs', snippet: 'Clita elitr et amet et ipsum sea. Ipsum stet kasd ea et no est duo diam. Lorem dolores eos ut nonumy'},
-        {title: 'Yoshi finds eggs', snippet: 'Clita elitr et amet et ipsum sea. Ipsum stet kasd ea et no est duo diam. Lorem dolores eos ut nonumy'}
-        
-    ];
-
-    res.render('index', { title: 'Home', blogs});
+   res.redirect('/blogs')
 });
 
 app.get('/about', (req, res) => {
     res.render('about', { title: 'About'});
 });
 
-// redirects
+// all blogs
+app.get('/blogs', (req, res) => {
+    Blog.find().sort({ createdAt: -1 })
+        .then((result) => {
+            res.render('index', {title: 'all-blogs', blogs: result})
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+})
+
 app.get('/blogs/create', (req, res) => {
     res.render('create', { title: 'Create'});
 });

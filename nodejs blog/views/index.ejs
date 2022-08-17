@@ -3,11 +3,14 @@
   <%- include('./partials/nav.ejs') %>
 
     <div class="blogs content">
-        <h2>All Blogs</h2>
+        <h1>All Blogs</h1>
+        <br>
         <% if(blogs.length > 0){%>
                 <% blogs.forEach(blog => {%>
-                    <h1 class="title"><%= blog.title %></h1>
+                    <p class="title"><b><%= blog.title %></b></p>
                     <p class="snippet"><%= blog.snippet %></p>
+                    <p class="body"><%= blog.body %></p>
+                    <br>
 
                 <%})%>
             <%} else {%>
